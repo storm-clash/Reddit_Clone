@@ -36,4 +36,8 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     private Subreddit subreddit;
+
+    public int getVoteCount() {
+        return voteCount != null ? voteCount.intValue() : 0;
+    }
 }

@@ -4,6 +4,7 @@ import com.example.BaseProject.Jwt.JwtService;
 import com.example.BaseProject.dto.RegisterRequest;
 import com.example.BaseProject.exceptions.SpringRedditException;
 import com.example.BaseProject.model.NotificationEmail;
+import com.example.BaseProject.service.MailContentBuilder;
 import com.example.BaseProject.user.Role;
 import com.example.BaseProject.user.User;
 import com.example.BaseProject.model.VerificationToken;
@@ -34,7 +35,7 @@ public class AuthService {
     private final MailService mailService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
+    private final MailContentBuilder mailContentBuilder;
     @Transactional
     public AuthResponse signup(RegisterRequest registerRequest) {
         if(repository.findByUsername(registerRequest.getUsername()).isEmpty()) {
@@ -48,10 +49,11 @@ public class AuthService {
                     .build();
             repository.save(user);
             String token = generateVerificationToken(user);
-            mailService.sendMail(new NotificationEmail("Please Activate your Account",
-                    user.getEmail(), "Thanks you for signing up to Spring Reddit, " +
+            String message = "Thanks you for signing up to Spring Reddit, " +
                     "please click on the below url to activate your account : " +
-                    "http://localhost:3000/auth/accountVerification/" + token
+                    "http://localhost:3000/auth/accountVerification/" + token;
+            mailService.sendMail(new NotificationEmail(user.getUsername() + " Please Activate your Account",
+                    user.getEmail(), message
             ));
             return AuthResponse.builder()
                     .token(jwtService.getToken(user))

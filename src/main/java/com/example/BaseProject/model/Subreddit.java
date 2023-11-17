@@ -7,8 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -30,4 +32,11 @@ public class Subreddit {
     private Instant createdDate;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public List<Post> getPosts() {
+        if (posts == null) {
+            posts = new ArrayList<>(); // Initialize the list if it is null
+        }
+        return posts;
+    }
 }
