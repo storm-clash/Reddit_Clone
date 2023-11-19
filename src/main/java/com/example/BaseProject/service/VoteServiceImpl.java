@@ -47,9 +47,11 @@ public class VoteServiceImpl implements VoteService{
     }
     private Vote mapToVote(VoteDto voteDto) {
         Post post = postRepository.findById(voteDto.getPostId()).orElseThrow(()->new PostNotFoundException("Post ID- " + voteDto.getPostId() + " Could not be found"));
+        User user = (User) userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         return Vote.builder()
                 .voteType(voteDto.getVoteType())
                 .post(post)
+                .user(user)
                 .build();
 
     }
