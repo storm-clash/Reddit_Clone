@@ -88,7 +88,7 @@ public class PostServiceImpl implements PostService{
     private PostDto maptoDto(Post post) {
         Duration diference = Duration.between(post.getCreatedDate(), Instant.now());
 
-        long seconds = diference.getSeconds();
+        long days = diference.toDays();
 
 
         return PostDto.builder()
@@ -101,7 +101,7 @@ public class PostServiceImpl implements PostService{
 
                 .username(userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getUsername())
                 .voteCount(post.getVoteCount())
-                .duration(Duration.ofDays(seconds * 1000))
+                .dayOfDuration(days + " days ago")
                 .build();
     }
 

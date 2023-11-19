@@ -86,7 +86,7 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest loginRequest) {
-        UserDetails user = repository.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new SpringRedditException("User " + loginRequest.getUsername() + " could not be found"));
+        User user = repository.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new SpringRedditException("User " + loginRequest.getUsername() + " could not be found"));
         if (user.isEnabled()) {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 

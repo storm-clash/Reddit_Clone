@@ -19,7 +19,7 @@ public class PostDto {
 
     private String username;
     private Integer voteCount;
-    private Duration duration;
+    private String dayOfDuration;
 
 
 }
